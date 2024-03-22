@@ -9,12 +9,6 @@ import java.util.List;
 
 public class AuthorController
 {
-    public static void listAuthors()
-    {
-        AuthorModel authorModel = new AuthorModel();
-
-        JOptionPane.showMessageDialog(null, listAll(authorModel.list()));
-    }
 
     //Listar factorizado para cualquier objeto de lista
     public static String listAll(List<Object> objectList)
@@ -29,19 +23,27 @@ public class AuthorController
         return list;
     }
 
+    public static void listAuthors()
+    {
+        AuthorModel authorModel = new AuthorModel();
+
+        JOptionPane.showMessageDialog(null, listAll(authorModel.list()));
+    }
+
+
     //Solo listamos todos los autores
     public static String listAllAuthors()
     {
-        AuthorModel objModel = new AuthorModel();
-        String listCoders = "🤷‍♂️ CODER LIST \n";
+        AuthorModel authorModel = new AuthorModel();
+        String listAuthors = "AUTHORS LIST \n";
 
-        for (Object iterador: objModel.list()){
-            //Convertimos del Object a Coder
-            Coder objCoder = (Coder) iterador;
-            listCoders += objCoder.toString() + "\n";
+        for (Object author: authorModel.list()){
+
+            Author authorNew = (Author) author;
+            listAuthors += authorNew.toString() + "\n";
         }
 
-        return listCoders;
+        return listAuthors;
     }
 
     public static void delete()
@@ -74,73 +76,69 @@ public class AuthorController
         }
     }
 
-
-/*
-    public static void create(){
-        //Usamos el modelo
-        CoderModel objCoderModel = new CoderModel();
-
-        //Pedimos los datos al usuario
-        String name = JOptionPane.showInputDialog("Insert name");
-        String clan = JOptionPane.showInputDialog("Insert clan");
-        int age = Integer.parseInt(JOptionPane.showInputDialog("Insert age"));
-
-        //Creamos una instancia de coder
-        Coder objCoder = new Coder();
-        objCoder.setClan(clan);
-        objCoder.setAge(age);
-        objCoder.setName(name);
-
-        //Llamamos al método de insercción y guardamos el objeto que retorna en coder previamente instanciado, debemos castearlo.
-        objCoder = (Coder) objCoderModel.insert(objCoder);
-
-        JOptionPane.showMessageDialog(null, objCoder.toString());
-    }
-
-
-    public static void findByName()
-    {
-        CoderModel coderModel = new CoderModel();
-
-        String searchName = JOptionPane.showInputDialog("Ingrese el nombre a buscar");
-
-        String listCoders = "🤷‍LISTA DE CODERS ENCONTRADOS \n";
-
-        for (Object iterador: coderModel.findByName(searchName))
-        {
-            //Convertimos del Object a Coder
-            Coder objCoder = (Coder) iterador;
-            listCoders += objCoder.toString() + "\n";
-        }
-
-        JOptionPane.showMessageDialog(null ,listCoders);
-    }
-
     public static void update()
     {
-        CoderModel coderModel = new CoderModel();
+        AuthorModel authorModel = new AuthorModel();
 
-        String listCoders = getCodersList();
+        String authorsList = listAllAuthors();
 
-        int idUpdated = Integer.parseInt( JOptionPane.showInputDialog(listCoders + "Enter ID coder to edit"));
+        int idUpdated = Integer.parseInt( JOptionPane.showInputDialog(authorsList + "Enter Author ID to edit"));
 
-        Coder coder = coderModel.findById(idUpdated);
+        Author author = authorModel.findById(idUpdated);
 
-        if (coder == null)
+        if (author == null)
         {
-            JOptionPane.showMessageDialog(null, "No se encontró el coder");
+            JOptionPane.showMessageDialog(null, "Unknown Author");
         }
         else
         {
-            String name = JOptionPane.showInputDialog(null, "Ingrese el nombre del coder de lo contrario dejar tal cual", coder.getName());
-            int age = Integer.parseInt( JOptionPane.showInputDialog("Ingrese el nombre del coder de lo contrario dejar tal cual", String.valueOf(coder.getAge())));//Transformar a string de entero
-            String clan = JOptionPane.showInputDialog("Ingrese el nombre del coder de lo contrario dejar tal cual", coder.getClan());
+            String name = JOptionPane.showInputDialog(null, "Input the author name or leave default name", author.getName());
+            String nationality = JOptionPane.showInputDialog("Input the author Nationality ", author.getNationality());
 
-            coder.setName(name);
-            coder.setAge(age);
-            coder.setClan(clan);
+            author.setName(name);
+            author.setNationality(nationality);
 
-            coderModel.update(coder);
+            authorModel.update(author);
         }
-    }*/
+    }
+
+
+    public static void create(){
+
+        AuthorModel authorModel = new AuthorModel();
+        Author author = new Author();
+
+        String name = JOptionPane.showInputDialog("Insert author name");
+        String nationality = JOptionPane.showInputDialog("Insert author nationality");
+
+        author.setName(name);
+        author.setNationality(nationality);
+
+        author = (Author) authorModel.create(author);
+
+        JOptionPane.showMessageDialog(null, author.toString());
+    }
+
+    public static void findById()
+    {
+        AuthorModel authorModel = new AuthorModel();
+        Author author = new Author();
+
+        int id_author = Integer.parseInt(JOptionPane.showInputDialog("Input the Author ID to search"));
+
+        Author authorReceived =  authorModel.findById(id_author);
+
+        if (authorReceived == null)
+        {
+            JOptionPane.showMessageDialog(null, "ID Author not Found");
+        }
+        else
+        {
+            author.setId_author(authorReceived.getId_author());
+            author.setName(authorReceived.getName());
+            author.setNationality(authorReceived.getNationality());
+
+            JOptionPane.showMessageDialog(null, author.toString());
+        }
+    }
 }

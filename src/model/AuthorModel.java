@@ -16,7 +16,7 @@ import java.util.List;
 public class AuthorModel implements CRUD
 {
     @Override
-    public Object insert(Object object) {
+    public Object create(Object object) {
 
         Connection objConnection = ConfigDB.openConnection();
 
@@ -99,7 +99,7 @@ public class AuthorModel implements CRUD
 
         try
         {
-            String sqlQuery = "DELETE FROM authors WHERE id = ?;";
+            String sqlQuery = "DELETE FROM authors WHERE id_author = ?;";
 
             PreparedStatement preparedStatement = conexion.prepareStatement(sqlQuery);
 
@@ -137,17 +137,17 @@ public class AuthorModel implements CRUD
 
         try
         {
-            Coder coder = (Coder) object;
+            Author author = (Author) object;
 
-            String sqlQuery = "UPDATE coder SET name = ?, age = ?, clan = ? WHERE id = ?;";
+            String sqlQuery = "UPDATE coder SET name = ?, nationality = ? WHERE Id_author = ?;";
 
             PreparedStatement preparedStatement = conexion.prepareStatement(sqlQuery, PreparedStatement.RETURN_GENERATED_KEYS);
 
-            //Se le pasa el dato al statement
-            preparedStatement.setString(1, coder.getName());            //Se le pasa el dato al statement
-            preparedStatement.setInt(2, coder.getAge());
-            preparedStatement.setString(3, coder.getClan());
-            preparedStatement.setInt(4, coder.getId());
+            //Se le pasa posicion y dato al statement
+            preparedStatement.setInt(3, author.getId_author());
+            preparedStatement.setString(1, author.getName());
+            preparedStatement.setString(2, author.getNationality());
+
 
             int resultado = preparedStatement.executeUpdate();
 
@@ -171,7 +171,7 @@ public class AuthorModel implements CRUD
     }
 
     //No viene del CRUD, es propio
-    public Author findById(int id)
+    public Author findById(int id_author)
     {
         Connection conexion = ConfigDB.openConnection();
 
@@ -180,12 +180,12 @@ public class AuthorModel implements CRUD
 
         try
         {
-            String sqlQuery = "SELECT * FROM coder WHERE id = ?;";
+            String sqlQuery = "SELECT * FROM authors WHERE id_author = ?;";
 
             PreparedStatement preparedStatement = conexion.prepareStatement(sqlQuery);
 
             //Le pasamos el ID al query
-            preparedStatement.setInt(1, id);
+            preparedStatement.setInt(1, id_author);
 
             //Tipo de dato del jdbc: ResultSet
             /*
@@ -201,7 +201,7 @@ public class AuthorModel implements CRUD
             {
                 author = new Author();
 
-                author.setId_author(resultado.getInt("id"));
+                author.setId_author(resultado.getInt("id_author"));
                 author.setName(resultado.getString("name"));
                 author.setNationality(resultado.getString("nationality"));
 
@@ -209,56 +209,11 @@ public class AuthorModel implements CRUD
         }
         catch (Exception e)
         {
-            JOptionPane.showMessageDialog(null, "Hubo un error al buscar el coder");
+            JOptionPane.showMessageDialog(null, "Author model error" + e.getMessage());
         }
 
         ConfigDB.closeConnection();
         return author;
     }
 
-    public List<Object> findByName(String name)
-    {
-        // 1. Crear lista para guardar lo que nos devuelve la base de datos
-        List<Object> listCoders = new ArrayList<>();
-
-        // 2. Abrir la conexión
-        Connection objConnection = ConfigDB.openConnection();
-
-        try {
-            // 3. Escribimos el query en Sql
-            String sqlQuery = "SELECT *  FROM coder WHERE name LIKE ?;";
-
-            //4. Usar el prepareStatement ----  Se le pasa el dato al statement
-            PreparedStatement preparedStatement = objConnection.prepareStatement(sqlQuery);
-
-            preparedStatement.setString(1, "%" + name + "%");
-
-            //5. Ejecutar el query y obtener el resultado (ResulSet)
-
-            ResultSet resultado = preparedStatement.executeQuery();
-
-            // 6. Mientras haya un resultado siguiente hacer:
-            while (resultado.next()){
-
-                // 6.1 Crear un coder
-                Coder objCoder = new Coder();
-
-                //6.2 Llenar el objeto con la información de la base de datos del objeto ques está iterando
-                objCoder.setName(resultado.getString("name"));
-                objCoder.setAge(resultado.getInt("age"));
-                objCoder.setId(resultado.getInt("id"));
-                objCoder.setClan(resultado.getString("clan"));
-
-                //6.3 Agregamos el Coder a la lista
-                listCoders.add(objCoder);
-            }
-
-        }catch (SQLException error){
-            JOptionPane.showMessageDialog(null, error.getMessage());
-        }
-        //Paso 7. Cerrar la conexión
-        ConfigDB.closeConnection();
-
-        return listCoders;
-    }
 }

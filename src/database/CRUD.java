@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface CRUD {
 
-    public Object insert(Object obj);
+    public Object create(Object obj);
     public List<Object> list();
 
     public boolean update(Object obj);

@@ -61,11 +61,11 @@ public class Book
 
     @Override
     public String toString() {
-        return "book: " +
-                "id_book=" + id_book +
-                ", tittle='" + tittle + '\'' +
-                ", price=" + price +
-                ", release_data='" + release_data + '\'' +
-                ", fk_author=" + fk_author;
+        return "book: --> " +
+                "id_book: " + id_book +
+                ", tittle: '" + tittle +
+                ", price: " + price +
+                ", release_data: '" + release_data +
+                ", fk_author: " + fk_author;
     }
 }

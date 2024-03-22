@@ -41,9 +41,9 @@ public class Author
 
     @Override
     public String toString() {
-        return "author -->" +
-                "id_author=" + id_author +
-                ", name='" + name + '\'' +
-                ", nationality='" + nationality + '\'';
+        return "author --> " +
+                "id_author: " + id_author +
+                ", name: '" + name + '\'' +
+                ", nationality=: " + nationality;
     }
 }
