@@ -5,17 +5,17 @@ public class Book
     private int id_book;
     private String tittle;
     private double price;
-    private String release_data;
+    private int release_date;
     private int fk_author;
 
     public Book() {
     }
 
-    public Book(int id_book, String tittle, double price, String release_data, int fk_author) {
+    public Book(int id_book, String tittle, double price, int release_date, int fk_author) {
         this.id_book = id_book;
         this.tittle = tittle;
         this.price = price;
-        this.release_data = release_data;
+        this.release_date = release_date;
         this.fk_author = fk_author;
     }
 
@@ -43,12 +43,12 @@ public class Book
         this.price = price;
     }
 
-    public String getRelease_data() {
-        return release_data;
+    public int getRelease_date() {
+        return release_date;
     }
 
-    public void setRelease_data(String release_data) {
-        this.release_data = release_data;
+    public void setRelease_date(int release_date) {
+        this.release_date = release_date;
     }
 
     public int getFk_author() {
@@ -63,9 +63,9 @@ public class Book
     public String toString() {
         return "book: --> " +
                 "id_book: " + id_book +
-                ", tittle: '" + tittle +
+                ", tittle: " + tittle +
                 ", price: " + price +
-                ", release_data: '" + release_data +
+                ", release_date: '" + release_date +
                 ", fk_author: " + fk_author;
     }
 }

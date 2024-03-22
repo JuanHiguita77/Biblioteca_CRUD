@@ -13,6 +13,8 @@ public class Main {
         String authorOptionMenu;
         String bookOptionMenu;
 
+        boolean exit = false;
+
         do
         {
             optionPrincipalMenu = JOptionPane.showInputDialog("""
@@ -56,13 +58,15 @@ public class Main {
                                 case "5":
                                     authorController.delete();
                                     break;
-
+                                case "6":
+                                    exit = true;
+                                    break;
                             }
-                        }while (!authorOptionMenu.equals("6"));
+                        }while (!exit);
 
                 break;
 
-                case "1":
+                case "2":
                         do
                         {
                             bookOptionMenu = JOptionPane.showInputDialog("""
@@ -105,9 +109,11 @@ public class Main {
                                 case "7":
                                     bookController.delete();
                                     break;
-
+                                case "8":
+                                    exit = true;
+                                    break;
                             }
-                        }while (!bookOptionMenu.equals("8"));
+                        }while (!exit);
                 break;
             }
         }while(!optionPrincipalMenu.equals("3"));

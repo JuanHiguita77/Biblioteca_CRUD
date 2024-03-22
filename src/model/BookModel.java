@@ -28,14 +28,14 @@ public class BookModel implements CRUD
         try {
 
             //El id se pone automatico por la base de datos
-            String sql = "INSERT INTO books (tittle, price, release_data, fk_author) VALUES ( ?, ?, ? , ? );";
+            String sql = "INSERT INTO books (tittle, price, release_date, fk_author) VALUES ( ?, ?, ? , ? );";
 
             PreparedStatement preparedStatement = objConnection.prepareStatement(sql,PreparedStatement.RETURN_GENERATED_KEYS);
 
             preparedStatement.setString(1, book.getTittle());
             preparedStatement.setDouble(2, book.getPrice());
-            preparedStatement.setString(3, book.getRelease_data());
-            preparedStatement.setInt(4, author.getId_author());
+            preparedStatement.setInt(3, book.getRelease_date());
+            preparedStatement.setInt(4, book.getFk_author());
 
             preparedStatement.execute();
 
@@ -49,7 +49,7 @@ public class BookModel implements CRUD
             JOptionPane.showMessageDialog(null, "New Book successful.");
 
         }catch (SQLException e){
-            JOptionPane.showMessageDialog(null,e.getMessage());
+            JOptionPane.showMessageDialog(null,"Error en el modelo creando " + e.getMessage());
 
         }
 
@@ -79,7 +79,7 @@ public class BookModel implements CRUD
 
                 book.setId_book(resultado.getInt("id_book"));
                 book.setTittle(resultado.getString("tittle"));
-                book.setRelease_data(resultado.getString("release_data"));
+                book.setRelease_date(resultado.getInt("release_date"));
                 book.setPrice(resultado.getDouble("price"));
                 book.setFk_author(resultado.getInt("fk_author"));
 
@@ -147,14 +147,14 @@ public class BookModel implements CRUD
         {
             Book book = (Book) object;
 
-            String sqlQuery = "UPDATE books SET tittle = ?, release_data = ?, price = ?, fk_author = ? WHERE id_book = ?;";
+            String sqlQuery = "UPDATE books SET tittle = ?, release_date = ?, price = ?, fk_author = ? WHERE id_book = ?;";
 
             PreparedStatement preparedStatement = conexion.prepareStatement(sqlQuery, PreparedStatement.RETURN_GENERATED_KEYS);
 
             //Se le pasa posicion y dato al statement
             preparedStatement.setInt(5, book.getId_book());
             preparedStatement.setString(1, book.getTittle());
-            preparedStatement.setString(2, book.getRelease_data());
+            preparedStatement.setInt(2, book.getRelease_date());
             preparedStatement.setDouble(3, book.getPrice());
             preparedStatement.setInt(4, book.getFk_author());
 
@@ -205,7 +205,7 @@ public class BookModel implements CRUD
 
                 book.setId_book(resultado.getInt("id_book"));
                 book.setTittle(resultado.getString("tittle"));
-                book.setRelease_data(resultado.getString("release_data"));
+                book.setRelease_date(resultado.getInt("release_date"));
                 book.setPrice(resultado.getDouble("price"));
                 book.setFk_author(resultado.getInt("fk_author"));
 
@@ -228,7 +228,7 @@ public class BookModel implements CRUD
 
         try {
 
-            String sqlQuery = "SELECT *  FROM books WHERE tittle LIKE ?;";
+            String sqlQuery = "SELECT * FROM books WHERE tittle LIKE ?;";
 
             PreparedStatement preparedStatement = conexion.prepareStatement(sqlQuery);
 
@@ -244,7 +244,7 @@ public class BookModel implements CRUD
                 book.setFk_author(resultado.getInt("fk_author"));
                 book.setTittle(resultado.getString("tittle"));
                 book.setPrice(resultado.getDouble("price"));
-                book.setRelease_data(resultado.getString("release_data"));
+                book.setRelease_date(resultado.getInt("release_date"));
 
                 listBooks.add(book);
             }
@@ -265,11 +265,11 @@ public class BookModel implements CRUD
         Connection conexion = ConfigDB.openConnection();
 
         try {
-            String sqlQuery = "SELECT books.* FROM books JOIN authors ON books. fk_author = authors.id_author WHERE authors.name LIKE ?;";
+            String sqlQuery = "SELECT * FROM books JOIN authors ON books.fk_author = authors.id_author WHERE authors.name LIKE ?;";
 
             PreparedStatement preparedStatement = conexion.prepareStatement(sqlQuery);
 
-            preparedStatement.setString(1, "%" + authorName + "%");
+            preparedStatement.setString(1, authorName);
 
             ResultSet resultado = preparedStatement.executeQuery();
 
@@ -279,7 +279,7 @@ public class BookModel implements CRUD
 
                 book.setId_book(resultado.getInt("id_book"));
                 book.setTittle(resultado.getString("tittle"));
-                book.setRelease_data(resultado.getString("release_data"));
+                book.setRelease_date(resultado.getInt("release_date"));
                 book.setPrice(resultado.getDouble("price"));
 
                 listBooks.add(book);

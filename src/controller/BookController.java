@@ -93,13 +93,13 @@ public class BookController
             else
             {
                 String tittle = JOptionPane.showInputDialog(null, "Input the tittle name or leave default tittle", book.getTittle());
-                String release_data = JOptionPane.showInputDialog(null, "Input the tittle name or leave default tittle", book.getRelease_data());
+                int release_date = Integer.parseInt( JOptionPane.showInputDialog(null, "Input the tittle name or leave default tittle", book.getRelease_date()));
                 double price = Double.parseDouble( JOptionPane.showInputDialog("Input the price or leave default price ", book.getPrice()));
                 int id_author = Integer.parseInt(JOptionPane.showInputDialog("Input the ID author or leave the default", book.getFk_author()));
 
                 book.setTittle(tittle);
                 book.setPrice(price);
-                book.setRelease_data(release_data);
+                book.setRelease_date(release_date);
                 book.setFk_author(id_author);
 
                 bookModel.update(book);
@@ -114,15 +114,15 @@ public class BookController
             Book book = new Book();
 
             String tittle = JOptionPane.showInputDialog("Insert tittle book");
-            Double price = Double.parseDouble(JOptionPane.showInputDialog("Insert book price"));
-            String release_data = JOptionPane.showInputDialog("Insert book release_data");
+            double price = Double.parseDouble(JOptionPane.showInputDialog("Insert book price"));
+            int release_date = Integer.parseInt(JOptionPane.showInputDialog("Insert book release_date"));
 
-            authorController.listAuthors();
-            int fk_author = Integer.parseInt(JOptionPane.showInputDialog("Choose an ID author"));
+            String authorList = authorController.listAllAuthors();
+            int fk_author = Integer.parseInt(JOptionPane.showInputDialog(authorList + "\n" + "Choose an ID author"));
 
             book.setTittle(tittle);
             book.setPrice(price);
-            book.setRelease_data(release_data);
+            book.setRelease_date(release_date);
             book.setFk_author(fk_author);
 
             book = (Book) bookModel.create(book);
@@ -149,7 +149,7 @@ public class BookController
                 book.setFk_author(bookReceived.getFk_author());
                 book.setTittle(bookReceived.getTittle());
                 book.setPrice(bookReceived.getPrice());
-                book.setRelease_data(bookReceived.getRelease_data());
+                book.setRelease_date(bookReceived.getRelease_date());
 
                 JOptionPane.showMessageDialog(null, book.toString());
             }
