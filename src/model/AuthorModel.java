@@ -3,7 +3,6 @@ package model;
 import database.CRUD;
 import database.ConfigDB;
 import entity.Author;
-import entity.Coder;
 
 import javax.swing.JOptionPane;
 import java.sql.Connection;
@@ -110,17 +109,17 @@ public class AuthorModel implements CRUD
             if (resultadoFilasAfectadas > 0)
             {
                 isDeleted = true;
-                JOptionPane.showMessageDialog(null,"Se borraron correctamente la fila --> " + resultadoFilasAfectadas);
+                JOptionPane.showMessageDialog(null,"Delete correctly --> " + resultadoFilasAfectadas);
             }
             else
             {
-                JOptionPane.showMessageDialog(null, "No se pudo Eliminar");
+                JOptionPane.showMessageDialog(null, "Dont deleted x.x");
             }
 
         }
         catch (SQLException e)
         {
-            JOptionPane.showMessageDialog(null, "Error en el Delete: " +  e.getMessage());
+            JOptionPane.showMessageDialog(null, "Error in delete: " +  e.getMessage());
         }
 
         ConfigDB.closeConnection();
@@ -139,7 +138,7 @@ public class AuthorModel implements CRUD
         {
             Author author = (Author) object;
 
-            String sqlQuery = "UPDATE coder SET name = ?, nationality = ? WHERE Id_author = ?;";
+            String sqlQuery = "UPDATE authors SET name = ?, nationality = ? WHERE Id_author = ?;";
 
             PreparedStatement preparedStatement = conexion.prepareStatement(sqlQuery, PreparedStatement.RETURN_GENERATED_KEYS);
 
