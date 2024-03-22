@@ -186,13 +186,6 @@ public class AuthorModel implements CRUD
             //Le pasamos el ID al query
             preparedStatement.setInt(1, id_author);
 
-            //Tipo de dato del jdbc: ResultSet
-            /*
-             * execute: devuelve boolean
-             * executeQuery: Devuelve algo
-             * executeUpdate: Actualiza
-             * */
-
             ResultSet resultado = preparedStatement.executeQuery();
 
             //Asignamos los datos encontrados

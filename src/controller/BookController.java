@@ -13,56 +13,56 @@ public class BookController
         //Listar factorizado para cualquier objeto de lista
         public static String listAll(List<Object> objectList)
         {
-            String list = "--- AUTHORS LIST --- \n";
+            String listBooks = "--- BOOKS LIST --- \n";
 
-            for (Object author: objectList){
-                Author authorEntity = (Author) author;
-                list += authorEntity.toString() + "\n";
+            for (Object book: objectList){
+                Book bookEntity = (Book) book;
+                listBooks += bookEntity.toString() + "\n";
             }
 
-            return list;
+            return listBooks;
         }
 
-        public static void listAuthors()
+        public static void listBooks()
         {
-            AuthorModel authorModel = new AuthorModel();
+            BookModel bookModel = new BookModel();
 
-            JOptionPane.showMessageDialog(null, listAll(authorModel.list()));
+            JOptionPane.showMessageDialog(null, listAll(bookModel.list()));
         }
-
 
         //Solo listamos todos los autores
-        public static String listAllAuthors()
+        public static String listAllBooks()
         {
-            AuthorModel authorModel = new AuthorModel();
-            String listAuthors = "AUTHORS LIST \n";
+            BookModel bookModel = new BookModel();
 
-            for (Object author: authorModel.list()){
+            String listBooks = "BOOKS LIST \n";
+
+            for (Object author: bookModel.list()){
 
                 Author authorNew = (Author) author;
-                listAuthors += authorNew.toString() + "\n";
+                listBooks += authorNew.toString() + "\n";
             }
 
-            return listAuthors;
+            return listBooks;
         }
 
         public static void delete()
         {
-            AuthorModel authorModel = new AuthorModel();
+            BookModel bookModel = new BookModel();
 
-            String authorsLists = listAllAuthors();
-            int id = Integer.parseInt(JOptionPane.showInputDialog(authorsLists + "Input the Author ID"));
+            String booksList = listAllBooks();
+            int id = Integer.parseInt(JOptionPane.showInputDialog(booksList + "Input the Book ID"));
 
             //Buscamos primero si existe
-            Author author = authorModel.findById(id);
+            Book book = bookModel.findById(id);
 
-            if (author == null)
+            if (book == null)
             {
-                JOptionPane.showInputDialog(null,"Unknown Author");
+                JOptionPane.showInputDialog(null,"Unknown Book");
             }
             else
             {
-                int confirm = JOptionPane.showConfirmDialog(null,"Are you sure to delete? -- > " + author.toString());
+                int confirm = JOptionPane.showConfirmDialog(null,"Are you sure to delete? -- > " + book.toString());
 
                 if (confirm == 1)
                 {
@@ -70,44 +70,47 @@ public class BookController
                 }
                 else
                 {
-                    authorModel.delete(author);
-                    JOptionPane.showMessageDialog(null, "Deleted sucessfully! --> " + author.toString());
+                    bookModel.delete(book);
+                    JOptionPane.showMessageDialog(null, "Deleted sucessfully! --> " + book.toString());
                 }
             }
         }
 
         public static void update()
         {
-            AuthorModel authorModel = new AuthorModel();
+            BookModel bookModel = new BookModel();
 
-            String authorsList = listAllAuthors();
+            String booksList = listAllBooks();
 
-            int idUpdated = Integer.parseInt( JOptionPane.showInputDialog(authorsList + "Enter Author ID to edit"));
+            int idUpdated = Integer.parseInt( JOptionPane.showInputDialog(booksList + "Enter Book ID to edit"));
 
-            Author author = authorModel.findById(idUpdated);
+            Book book = bookModel.findById(idUpdated);
 
-            if (author == null)
+            if (book == null)
             {
-                JOptionPane.showMessageDialog(null, "Unknown Author");
+                JOptionPane.showMessageDialog(null, "Unknown Book");
             }
             else
             {
-                String name = JOptionPane.showInputDialog(null, "Input the author name or leave default name", author.getName());
-                String nationality = JOptionPane.showInputDialog("Input the author Nationality ", author.getNationality());
+                String tittle = JOptionPane.showInputDialog(null, "Input the tittle name or leave default tittle", book.getTittle());
+                String release_data = JOptionPane.showInputDialog(null, "Input the tittle name or leave default tittle", book.getRelease_data());
+                double price = Double.parseDouble( JOptionPane.showInputDialog("Input the price or leave default price ", book.getPrice()));
+                int id_author = Integer.parseInt(JOptionPane.showInputDialog("Input the ID author or leave the default", book.getFk_author()));
 
-                author.setName(name);
-                author.setNationality(nationality);
+                book.setTittle(tittle);
+                book.setPrice(price);
+                book.setRelease_data(release_data);
+                book.setFk_author(id_author);
 
-                authorModel.update(author);
+                bookModel.update(book);
             }
         }
-
 
         public static void create(){
 
             AuthorController authorController = new AuthorController();
-
             BookModel bookModel = new BookModel();
+
             Book book = new Book();
 
             String tittle = JOptionPane.showInputDialog("Insert tittle book");
@@ -129,24 +132,61 @@ public class BookController
 
         public static void findById()
         {
-            AuthorModel authorModel = new AuthorModel();
-            Author author = new Author();
+            BookModel bookModel = new BookModel();
+            Book book = new Book();
 
-            int id_author = Integer.parseInt(JOptionPane.showInputDialog("Input the Author ID to search"));
+            int id_book = Integer.parseInt(JOptionPane.showInputDialog("Input the Book ID to search"));
 
-            Author authorReceived =  authorModel.findById(id_author);
+            Book bookReceived = bookModel.findById(id_book);
 
-            if (authorReceived == null)
+            if (bookReceived == null)
             {
-                JOptionPane.showMessageDialog(null, "ID Author not Found");
+                JOptionPane.showMessageDialog(null, "ID Book not Found");
             }
             else
             {
-                author.setId_author(authorReceived.getId_author());
-                author.setName(authorReceived.getName());
-                author.setNationality(authorReceived.getNationality());
+                book.setId_book(bookReceived.getId_book());
+                book.setFk_author(bookReceived.getFk_author());
+                book.setTittle(bookReceived.getTittle());
+                book.setPrice(bookReceived.getPrice());
+                book.setRelease_data(bookReceived.getRelease_data());
 
-                JOptionPane.showMessageDialog(null, author.toString());
+                JOptionPane.showMessageDialog(null, book.toString());
             }
         }
+
+        public static void findByTittle()
+        {
+            BookModel bookModel = new BookModel();
+
+            String searchTittle = JOptionPane.showInputDialog("Input search tittle");
+
+            String listBooks = "🤷‍LIST BOOKS FINDED... \n";
+
+            for (Object book: bookModel.findByName(searchTittle))
+            {
+                Book newBook = (Book) book;
+                listBooks += newBook.toString() + "\n";
+            }
+
+            JOptionPane.showMessageDialog(null ,listBooks);
+        }
+
+        public static void findByAuthor()
+        {
+            BookModel bookModel = new BookModel();
+
+            String searchAuthorName = JOptionPane.showInputDialog("Input Author name");
+
+            String listBooks = "🤷‍LIST BOOKS FINDED... \n";
+
+            for (Object book: bookModel.findByAuthor(searchAuthorName))
+            {
+                Book newBook = (Book) book;
+                listBooks += newBook.toString() + "\n";
+            }
+
+            JOptionPane.showMessageDialog(null ,listBooks);
+        }
+
 }

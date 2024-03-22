@@ -153,7 +153,7 @@ public class BookModel implements CRUD
 
             //Se le pasa posicion y dato al statement
             preparedStatement.setInt(5, book.getId_book());
-            preparedStatement.setString(1, book.getTittle()));
+            preparedStatement.setString(1, book.getTittle());
             preparedStatement.setString(2, book.getRelease_data());
             preparedStatement.setDouble(3, book.getPrice());
             preparedStatement.setInt(4, book.getFk_author());
@@ -195,13 +195,6 @@ public class BookModel implements CRUD
 
             //Le pasamos el ID al query
             preparedStatement.setInt(1, id_book);
-
-            //Tipo de dato del jdbc: ResultSet
-            /*
-             * execute: devuelve boolean
-             * executeQuery: Devuelve algo
-             * executeUpdate: Actualiza
-             * */
 
             ResultSet resultado = preparedStatement.executeQuery();
 
@@ -272,7 +265,7 @@ public class BookModel implements CRUD
         Connection conexion = ConfigDB.openConnection();
 
         try {
-            String sqlQuery = "SELECT books.* FROM books  JOIN authors ON books. fk_author = authors.id_author WHERE authors.name LIKE ?;";
+            String sqlQuery = "SELECT books.* FROM books JOIN authors ON books. fk_author = authors.id_author WHERE authors.name LIKE ?;";
 
             PreparedStatement preparedStatement = conexion.prepareStatement(sqlQuery);
 
